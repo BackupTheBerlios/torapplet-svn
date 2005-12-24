@@ -1,0 +1,32 @@
+<oaf_info>
+
+<oaf_server iid="OAFIID:GNOME_TorApplet_Factory"
+            type="exe"
+            location="torapplet0.py">
+
+        <oaf_attribute name="repo_ids" type="stringv">
+                <item value="IDL:Bonobo/GenericFactory:1.0" />
+                <item value="IDL:Bonobo/Unknown:1.0" />
+        </oaf_attribute>
+        <oaf_attribute name="name" type="string" value="TorApplet" />
+        <oaf_attribute name="description" type="string" value="Monitoring the Tor daemon activity." />
+        <oaf_attribute name="description-it" type="string" value="Monitoraggio dell'attività del demone Tor." />
+</oaf_server>
+
+<oaf_server iid="OAFIID:GNOME_TorApplet"
+            type="factory" 
+            location="OAFIID:GNOME_TorApplet_Factory">
+
+        <oaf_attribute name="repo_ids" type="stringv">
+                <item value="IDL:GNOME/Vertigo/PanelAppletShell:1.0" />
+                <item value="IDL:Bonobo/Control:1.0" />
+                <item value="IDL:Bonobo/Unknown:1.0" />
+        </oaf_attribute>
+        <oaf_attribute name="name" type="string" value="TorApplet" />
+        <oaf_attribute name="description" type="string" value="Monitoring the Tor daemon activity." />
+	 <oaf_attribute name="description-it" type="string" value="Monitoraggio dell'attività del demone Tor." />	
+        <oaf_attribute name="panel:category" type="string" value="Utilities" />
+        <oaf_attribute name="panel:icon" type="string" value="tor-icon.png" />
+</oaf_server>
+
+</oaf_info>

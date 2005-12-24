@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<!DOCTYPE glade-project SYSTEM "http://glade.gnome.org/glade-project-2.0.dtd">
+
+<glade-project>
+  <name>torapplet0</name>
+  <program_name>torapplet0</program_name>
+  <source_directory></source_directory>
+  <pixmaps_directory>../pixmaps</pixmaps_directory>
+  <output_translatable_strings>TRUE</output_translatable_strings>
+  <translatable_strings_file>torapplet0.glade.c</translatable_strings_file>
+</glade-project>

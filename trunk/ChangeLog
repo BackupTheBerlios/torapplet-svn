@@ -1,0 +1,13 @@
+2005-12-20 Features of version 0.0.3
+
+	* Visual display of the Tor daemon status (red icon: stopped,
+	  green icon: started, dark green icon: sending/receiving);
+	* Tooltip with basic informations (daemon status, uptime, 
+	  version, bytes sent/received, log warinigs/errors,
+	  number of connected onion routers);
+	* Menu that allow to start, stop and restart the daemon, and
+	  to display an about box and a properties dialog;
+	* Properties dialog with informations about daemon activity;
+	* GUI for tor-resolve;
+	* Support for localization;
+	* Italian translation.

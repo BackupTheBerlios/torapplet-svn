@@ -1,0 +1,16 @@
+Please report bugs at https://developer.berlios.de/bugs/?group_id=5564
+
+Remember to insert in the report any information useful to reproduce
+and fix the problem, insert AT LEAST the following:
+	* Operating system (distribution, version)
+	* Tor version (specify if you installed a packaged version or
+	  if you compiled Tor from source).
+	* GTK and GNOME versions.
+	* Python, pygtk, gnome-python versions.
+
+If you start the program from the command lind typing
+	torapplet0.py run-in-window
+	
+the error messages will be displayed on the terminal. If you can
+reproduce the bug running the program this way, please insert in your
+report any error message you receive.

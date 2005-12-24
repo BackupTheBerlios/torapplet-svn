@@ -1,0 +1,184 @@
+# Translation file for TorApplet.
+# Copyright (C) 2005 Fabrizio Tarizzo
+# This file is distributed under the same license as the TorApplet package.
+# Fabrizio Tarizzo <software@fabriziotarizzo.org>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: TorApplet0 0.1.2\n"
+"Report-Msgid-Bugs-To: https://developer.berlios.de/bugs/?group_id=5564\n"
+"POT-Creation-Date: 2005-12-22 18:35+0100\n"
+"PO-Revision-Date: 2005-12-13 19:08+0100\n"
+"Last-Translator: Fabrizio Tarizzo <software@fabriziotarizzo.org>\n"
+"Language-Team: Italian <it@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/torapplet0.py.in:78
+msgid "Monitoring the Tor daemon activity."
+msgstr "Monitoraggio dell'attività del demone Tor."
+
+#: src/torapplet0.py.in:85
+msgid "Started"
+msgstr "Attivo"
+
+#: src/torapplet0.py.in:85 src/torapplet0.glade.c:9
+msgid "Stopped"
+msgstr "Inattivo"
+
+#: src/torapplet0.py.in:112
+msgid "_Start Tor"
+msgstr "_Avvia Tor"
+
+#: src/torapplet0.py.in:113
+msgid "S_top Tor"
+msgstr "_Ferma Tor"
+
+#: src/torapplet0.py.in:114
+msgid "_Restart Tor"
+msgstr "_Riavvia Tor"
+
+#: src/torapplet0.py.in:115
+msgid "_Properties"
+msgstr "_Proprietà"
+
+#: src/torapplet0.py.in:116
+msgid "_About..."
+msgstr "_Informazioni"
+
+#: src/torapplet0.py.in:135
+msgid ""
+"Tor is Stopped\n"
+"Tor version: n/a"
+msgstr ""
+"Tor è Inattivo\n"
+"Versione di Tor: n/a"
+
+#: src/torapplet0.py.in:197
+msgid "Please enter your password"
+msgstr "Inserisci la tua password"
+
+#: src/torapplet0.py.in:198
+msgid "Password"
+msgstr "Password"
+
+#: src/torapplet0.py.in:219
+msgid "days"
+msgstr "giorni"
+
+#: src/torapplet0.py.in:258
+#, python-format
+msgid ""
+"Tor is %s %s\n"
+"Tor version: %s\n"
+"Sent: %s %s - Recv: %s %s\n"
+"Warnings: %d - Errors: %d\n"
+"Active OR Connections: %d"
+msgstr ""
+"Tor è %s %s\n"
+"Versione di Tor: %s\n"
+"Inviati: %s %s - Ricevuti: %s %s\n"
+"Avvisi: %d - Errori: %d\n"
+"Connessioni OR attive: %d"
+
+#: src/torapplet0.py.in:277 src/torapplet0.glade.c:11
+msgid "n/a"
+msgstr "n/a"
+
+#: src/torapplet0.py.in:344
+msgid "translator_credits"
+msgstr "Fabrizio Tarizzo"
+
+#: src/torapplet0.glade.c:7
+msgid "Tor properties"
+msgstr "Proprietà di Tor"
+
+#: src/torapplet0.glade.c:8
+msgid "Tor status: "
+msgstr "Stato di Tor: "
+
+#: src/torapplet0.glade.c:10
+msgid "Tor version: "
+msgstr "Versione di Tor: "
+
+#: src/torapplet0.glade.c:12
+msgid "Uptime: "
+msgstr "Uptime: "
+
+#: src/torapplet0.glade.c:13 src/torapplet0.glade.c:16
+#: src/torapplet0.glade.c:17 src/torapplet0.glade.c:22
+#: src/torapplet0.glade.c:23 src/torapplet0.glade.c:24
+#: src/torapplet0.glade.c:32 src/torapplet0.glade.c:33
+#: src/torapplet0.glade.c:34
+msgid "0"
+msgstr ""
+
+#: src/torapplet0.glade.c:14
+msgid "Warnings: "
+msgstr "Avvisi: "
+
+#: src/torapplet0.glade.c:15
+msgid "Errors: "
+msgstr "Errori: "
+
+#: src/torapplet0.glade.c:18
+msgid "Log messages:"
+msgstr ""
+
+#: src/torapplet0.glade.c:19
+msgid "Sent:"
+msgstr "Inviati: "
+
+#: src/torapplet0.glade.c:20
+msgid "Received: "
+msgstr "Ricevuti: "
+
+#: src/torapplet0.glade.c:21
+msgid "Total: "
+msgstr "Totale: "
+
+#: src/torapplet0.glade.c:25 src/torapplet0.glade.c:26
+#: src/torapplet0.glade.c:27
+msgid "bytes"
+msgstr "byte"
+
+#: src/torapplet0.glade.c:28
+msgid "Bandwidth usage:"
+msgstr "Uso della banda:"
+
+#: src/torapplet0.glade.c:29
+msgid "Launched: "
+msgstr "Connessioni avviate: "
+
+#: src/torapplet0.glade.c:30
+msgid "Connected: "
+msgstr "Connessi: "
+
+#: src/torapplet0.glade.c:31
+msgid "Failures: "
+msgstr "Connessioni fallite: "
+
+#: src/torapplet0.glade.c:35
+msgid "Onion Routers:"
+msgstr "Onion Router:"
+
+#: src/torapplet0.glade.c:36
+msgid "General"
+msgstr "Generale"
+
+#: src/torapplet0.glade.c:37
+msgid "IP Address: "
+msgstr "Indirizzo IP: "
+
+#: src/torapplet0.glade.c:38
+msgid "Host name: "
+msgstr "Nome host: "
+
+#: src/torapplet0.glade.c:39
+msgid "_Resolve"
+msgstr "_Risolvi"
+
+#: src/torapplet0.glade.c:40
+msgid "Tor Resolve"
+msgstr ""

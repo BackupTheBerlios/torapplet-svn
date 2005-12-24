@@ -1,0 +1,48 @@
+* Installation
+
+  You can install TorApplet from source with the usual commands:
+     tar jxf torapplet0-<version>.tag.bz2
+     cd torapplet0-<version>
+     ./configure --with-torinitscript=/path/to/tor-init-script
+     make
+     make install [as root]
+     killall bonobo-activation-server; killall gnome-panel
+
+  If you downloaded the source from the SVN repository, you must use
+  ./autogen.sh before the ./configure (it requires autoconf 2.59 and
+  automake/aclocal 1.9).
+
+  Depending on your distribution and tor installation, the tor init script
+  to specify in ./configure can be /etc/init.d/tor or /etc/rc.d/init.d/tor
+  If you want to start/stop/restart the Tor daemon from the applet, you
+  should configure sudo to allow your account to do it.
+  
+  You can specify the standard ./configure command line options. If you
+  specify with the --prefix option an installation directory other than
+  /usr (the default is, as usual, /usr/local), make sure that the
+  $prefix/lib/bonobo/servers is included in the bonobo-activation search
+  path: you may need to set BONOBO_ACTIVATION_PATH environment variable
+  or to edit /etc/bonobo-activation/bonobo-activation-config.xml
+
+* Prerequisites
+
+  ** Tor: this applet is developed and tested using tor version 0.1.0.15
+
+  ** Python: this program is developed and tested using python 2.4
+
+  ** Gnome: this applet is developed and tested using Gnome 2.12.1
+  
+  ** Standard Python modules: this program uses the following modules
+     from the Python standard library:
+           sys, os, gettext, locale, datetime, socket, struct
+
+  ** Required modules: this program requires the following Python modules:
+           pygyk, gtk, gtk.glade, gnome, gnome.ui, gnomeapplet, gobject
+	   
+     Moreover, this program ships with the TorControl module distributed
+     with Tor.
+
+* Notes
+  
+  The Tor control port 9051 is hardcoded. In future versions this option
+  will be set and read using GConf.

@@ -1,0 +1,12 @@
+* Better pixmaps
+* Use intltool for translating Glade UI instead of the
+  deprecated pseudo-C-source
+* Virtual circuits and Streams monitoring
+* GUI for torifying applications
+* Graphic of bandwidth usage
+* Display log messages
+* Improve coding style - uniform naming conventions
+* src/TorApplet0/TorStartStop.py: rewrite using libgksu[ui]
+* Write doc strings for Python functions, classes and modules
+* Adjust dialogs in Glade to be compliant with the GNOME Human
+  Interface Guidlines (alignments, paddings and so on).

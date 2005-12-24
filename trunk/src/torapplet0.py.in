@@ -1,0 +1,415 @@
+#! @PYTHON@
+#
+# TorApplet - A Gnome applet for monitoring the Tor daemon
+# Copyright (C) 2005 Fabrizio Tarizzo
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+import sys
+
+if sys.argv[0][-3:] == '.in':
+	#Used during testing...
+	PACKAGE_NAME    = "torapplet0"
+	PACKAGE_VERSION = "dev"
+	BUGREPORT	= "https://developer.berlios.de/bugs/?group_id=5564"
+	DATADIR 	= ''
+	PKGPIXMAPSDIR   = '../pixmaps'
+	LOCALEDIR       = ''
+	TORSCRIPT	= '/etc/init.d/tor'
+	PYTHONDIR	= '.'
+	GLADEFILE       = './torapplet0.glade'
+	TOR_RESOLVE	= '/usr/bin/tor-resolve'
+	TORIFY		= '/usr/bin/torify'
+	GKSUDO		= '/usr/bin/gksudo'
+else:
+	PACKAGE_NAME    = '@PACKAGE_NAME@'
+	PACKAGE_VERSION = '@PACKAGE_VERSION@'
+	BUGREPORT	= '@PACKAGE_BUGREPORT@'
+	DATADIR         = '@DATADIR@'
+	LOCALEDIR       = '@DATADIR@/locale'
+	PKGPIXMAPSDIR   = '@DATADIR@/pixmaps/@PACKAGE_NAME@'
+	TORSCRIPT       = '@INITDSCRIPT@'
+	PYTHONDIR	= '@PYTHONDIR@'
+	GLADEFILE       = '@DATADIR@/@PACKAGE_NAME@/torapplet0.glade'
+	TOR_RESOLVE	= '@TOR_RESOLVE@'
+	TORIFY		= '@TORIFY@'
+	GKSUDO		= '@GKSUDO@'
+
+if PYTHONDIR not in sys.path:
+	sys.path.append (PYTHONDIR)
+
+import pygtk
+pygtk.require('2.0')
+import gtk
+import gtk.glade
+import gnomeapplet
+import gnome
+import gnome.ui
+import gettext
+_ = gettext.gettext
+import locale
+
+import TorApplet0.TorMonitor as TorMonitor
+from TorApplet0.TorStartStop import *
+from TorApplet0 import TorResolve
+
+locale.setlocale (locale.LC_ALL, '')
+gettext.bindtextdomain (PACKAGE_NAME, LOCALEDIR)
+gettext.textdomain (PACKAGE_NAME)
+gtk.glade.bindtextdomain (PACKAGE_NAME, LOCALEDIR)
+gtk.glade.textdomain (PACKAGE_NAME)
+
+PACKAGE_AUTHORS = ("Fabrizio Tarizzo <software@fabriziotarizzo.org>", \
+	"The TorControl module is by Nick Mathewson.")
+PACKAGE_COPYRIGHT = "Copyright (C) 2005 Fabrizio Tarizzo\n" \
+	"Includes the TorControl module (C) 2005 Nick Mathewson."
+PACKAGE_DESCRIPTION = _("Monitoring the Tor daemon activity.")
+
+#TODO: the CONTROLPORT should be read from a configuration file/gconf key
+TOR_HOST = 'localhost'
+TOR_CONTROLPORT = 9051
+
+#Values for Tor Status. Used for translations only
+dummy = (_("Started"), _("Stopped"))
+
+class TorApplet:
+	def __init__ (self, applet, iid):
+		self.__program = gnome.init ('TorApplet', PACKAGE_VERSION)
+
+		#Pixmaps
+		self.__pixmaps = {'Stopped'  : PKGPIXMAPSDIR + \
+					'/tor-stopped-24x24.png', \
+				  'Started'  : PKGPIXMAPSDIR + \
+				  	'/tor-started-24x24.png', \
+				  'SendRecv' : PKGPIXMAPSDIR + \
+				  	'/tor-tx-24x24.png', \
+				  'TorLogo'  : PKGPIXMAPSDIR + \
+				  	'/tor-logo.png'}
+
+		#Context menu
+		self.__menu = """
+		<popup name="button3">
+		<menuitem name="ItemStart"   verb="StartTor"   label="%s" />
+		<menuitem name="ItemStop"    verb="StopTor"    label="%s" />
+		<menuitem name="ItemRestart" verb="RestartTor" label="%s" />
+		<separator />
+		<menuitem name="ItemProps" verb="Props" label="%s"
+			  pixtype="stock" pixname="gtk-properties" />
+		<menuitem name="ItemAbout" verb="About" label="%s"
+			  pixtype="stock" pixname="gnome-stock-about"/>
+		</popup>""" % ( _("_Start Tor"),
+				_("S_top Tor"),
+				_("_Restart Tor"),
+				_("_Properties"),
+				_("_About..."))
+
+		self.__verbs = [ ("About",      self.aboutbox),
+				 ("Props",      self.properties),
+				 ("StartTor",   self.start_tor),
+				 ("StopTor",    self.stop_tor),
+				 ("RestartTor", self.restart_tor) ]
+
+		#GTK stuff
+		self.__applet = applet
+		image = gtk.Image ()
+		image.set_from_file (self.__pixmaps['Stopped'])
+		self.__image = image
+		self.__eventbox = gtk.EventBox()
+		self.__eventbox.add (self.__image)
+		self.__eventbox.connect ("button-press-event", \
+					 self.button_press)
+		self.__applet.add (self.__eventbox)
+		self.__tooltips = gtk.Tooltips()
+		tooltip_text = _("Tor is Stopped\nTor version: n/a")
+		self.__tooltips.set_tip (self.__eventbox, tooltip_text)
+		self.__applet.show_all ()
+
+		#Glade stuff
+		self.__gladeui = gtk.glade.XML (GLADEFILE)
+		self.__propsdialog = self.__gladeui.get_widget \
+			('TorPropertiesDialog')
+			
+		self.__dialoglogo = self.__gladeui.get_widget ('logo')
+		self.__notebook = self.__gladeui.get_widget ('notebook1')
+			
+		self.__lblBytesSent = self.__gladeui.get_widget		\
+			('lblBytesSent')
+		self.__lblBytesRecv = self.__gladeui.get_widget		\
+			('lblBytesRecv')
+		self.__lblBytesTotal = self.__gladeui.get_widget	\
+			('lblBytesTotal')
+		self.__lblBytesSentUM = self.__gladeui.get_widget	\
+			('lblBytesSentUM')
+		self.__lblBytesRecvUM = self.__gladeui.get_widget	\
+			('lblBytesRecvUM')
+		self.__lblBytesTotalUM = self.__gladeui.get_widget	\
+			('lblBytesTotalUM')
+		self.__lblTorStatus = self.__gladeui.get_widget		\
+			('lblTorStatus')
+		self.__lblTorVersion = self.__gladeui.get_widget	\
+			('lblTorVersion')
+		self.__lblUptime = self.__gladeui.get_widget 		\
+			('lblUptime')
+		self.__lblORConnLaunched = self.__gladeui.get_widget	\
+			('lblORConnLaunched')
+		self.__lblORConnConnected  = self.__gladeui.get_widget	\
+			('lblORConnConnected')
+		self.__lblORConnFailures = self.__gladeui.get_widget	\
+			('lblORConnFailures')
+		self.__lblErrorsCount =  self.__gladeui.get_widget	\
+			('lblErrorsCount')
+		self.__lblWarningsCount =  self.__gladeui.get_widget	\
+			('lblWarningsCount')
+		self.__entryHostName = self.__gladeui.get_widget	\
+			('entryHostName')
+		self.__entryIpAddress = self.__gladeui.get_widget	\
+			('entryIpAddress')	
+		self.__lblTorResolveError = self.__gladeui.get_widget	\
+			('lblTorResolveError')
+			
+		self.__dialoglogo.set_from_file (self.__pixmaps['TorLogo'])	
+		self.__dialogevents = {
+			'on_TorPropertiesDialog_delete_event': \
+				self.__on_TorPropertiesDialog_delete_event, \
+			'on_closebutton1_clicked': \
+				self.__on_closebutton1_clicked, \
+			'on_buttonTorResolve_clicked': \
+				self.__on_buttonTorResolve_clicked
+			}
+
+		self.__gladeui.signal_autoconnect (self.__dialogevents)
+
+		#Monitoring stuff
+		self.__torresolve = TorResolve.TorResolve (TOR_RESOLVE)
+		
+		self.__startstop = TorStartStop (script=TORSCRIPT, \
+			message = _("Please enter your password"), \
+			title = _("Password"), \
+			gksudo = GKSUDO)
+		
+		self.__monitor = TorMonitor.TorMonitor ( \
+			level='notice', 	\
+			port = TOR_CONTROLPORT, \
+			host = TOR_HOST,	\
+			monitorBandwidth = True,\
+			monitorRouting = True)
+		
+		self.__monitor.registerObserver ('TorApplet0', \
+						 self.monitor_callback)
+		self.__monitor.start()
+	
+	def __formatTimeDelta (self, delta):
+		from datetime import timedelta
+		days = delta.days
+		secs = timedelta (seconds = delta.seconds)
+		if days == 0:
+			return str (secs)
+		else:
+			return "%s %s %s" % (days, _("days"), str (secs))
+			
+	def __formatBytes (self, bytes, precision=2):
+		K = 1024.0	 #1 kByte
+		M = 1048576.0	 #1 MByte
+		G = 1073741824.0 #1 GByte
+		precformat = "%%.%df" % (precision,)
+
+		if bytes < K:
+			b = locale.format (precformat, bytes, True)
+			return (b, 'Bytes')
+		elif bytes < M:
+			b = locale.format (precformat, bytes/K, True)
+			return (b, 'kBytes')
+		elif bytes < G:
+			b = locale.format (precformat, bytes/M, True)
+			return (b, 'MBytes')
+		else:
+			b = locale.format (precformat, bytes/G, True)
+			return (b, 'GBytes')
+	
+	def __resetLabels (self):
+		self.__lblBytesSent.set_text ('0')
+		self.__lblBytesRecv.set_text ('0')
+		self.__lblBytesTotal.set_text ('0')
+		self.__lblBytesSentUM.set_text ('bytes')
+		self.__lblBytesRecvUM.set_text ('bytes')
+		self.__lblBytesTotalUM.set_text ('bytes')
+		self.__lblORConnLaunched.set_text ('0')
+		self.__lblORConnConnected.set_text ('0')
+		self.__lblORConnFailures.set_text ('0')
+		self.__lblErrorsCount.set_text ('0')
+		self.__lblWarningsCount.set_text ('0')
+		self.__lblUptime.set_text ('0')
+		
+	def monitor_callback (self, notification, userdata):
+		s = self.__formatBytes (self.__monitor.bytesSent)
+		r = self.__formatBytes (self.__monitor.bytesRecv)
+		tooltip_text = _(
+"""Tor is %s %s
+Tor version: %s
+Sent: %s %s - Recv: %s %s
+Warnings: %d - Errors: %d
+Active OR Connections: %d""") % \
+			(_(self.__monitor.torStatus), \
+			(self.__monitor.torStatus == 'Started')
+				and "(Uptime: %s)" % \
+				self.__formatTimeDelta(self.__monitor.uptime) \
+				or '', \
+			self.__monitor.torVersion \
+			 	and self.__monitor.torVersion \
+				or 'n/a', \
+			s[0], s[1], r[0], r[1], \
+			self.__monitor.warningsCount, \
+			self.__monitor.errorsCount,   \
+			self.__monitor.orConnectionsCount['Connected'])
+		self.__tooltips.set_tip (self.__eventbox, tooltip_text)
+		
+		if self.__lblTorVersion.get_text() == _("n/a") and self.__monitor.torVersion:
+			self.__lblTorVersion.set_text \
+				(self.__monitor.torVersion)
+				
+		if self.__monitor.uptime:
+			self.__lblUptime.set_text \
+				(self.__formatTimeDelta (self.__monitor.uptime))
+
+		if notification.name == 'TorStatusChanged':
+			self.__image.set_from_file ( \
+				self.__pixmaps[notification.data])
+			self.__lblTorStatus.set_text (notification.data)
+
+		elif notification.name == 'BANDWIDTH':
+			bytes = int(notification.data[0])
+			bytes += int(notification.data[1])
+			if bytes > 0:
+				t = self.__formatBytes \
+					(self.__monitor.bytesRecv + \
+					 self.__monitor.bytesSent)
+	
+				self.__lblBytesSent.set_text (str(s[0]))
+				self.__lblBytesRecv.set_text (str(r[0]))
+				self.__lblBytesTotal.set_text (str(t[0]))
+				self.__lblBytesSentUM.set_text (str(s[1]))
+				self.__lblBytesRecvUM.set_text (str(r[1]))
+				self.__lblBytesTotalUM.set_text (str(t[1]))
+				self.__image.set_from_file ( \
+					self.__pixmaps['SendRecv'])
+			else:
+				self.__image.set_from_file ( \
+				     self.__pixmaps[self.__monitor.torStatus])
+
+		elif notification.name == 'ORCONNSTATUS':
+			count = self.__monitor.orConnectionsCount
+			self.__lblORConnLaunched.set_text \
+				(str (count['Launched']))
+			self.__lblORConnConnected.set_text \
+				(str (count['Connected']))
+			self.__lblORConnFailures.set_text \
+				(str (count['Failures']))
+
+		elif notification.name == "LOG_MESSAGE":
+			self.__lblWarningsCount.set_text \
+				(str (self.__monitor.warningsCount))
+			self.__lblErrorsCount.set_text \
+				(str (self.__monitor.errorsCount))
+
+		elif notification.name == "ResetCounters":
+			self.__resetLabels ()
+
+		else:
+			pass
+			#TODO: implement Circuit and Stream events
+
+	def aboutbox (self, event, data=None):
+		logo = gtk.gdk.pixbuf_new_from_file (self.__pixmaps['TorLogo'])
+		about = gnome.ui.About (	 \
+			"TorApplet", 		 \
+			PACKAGE_VERSION,	 \
+			PACKAGE_COPYRIGHT,	 \
+			PACKAGE_DESCRIPTION,	 \
+			PACKAGE_AUTHORS,	 \
+			[],			 \
+			_("translator_credits"), \
+			logo)
+		about.show()
+
+	def properties (self, event, data=None):
+		self.__notebook.set_current_page (0)
+		self.__propsdialog.show_all ()
+		
+	def __on_TorPropertiesDialog_delete_event (self, widget, data=None):
+		widget.hide ()
+		return True
+
+	def __on_closebutton1_clicked (self, widget, data=None):
+		self.__propsdialog.hide ()
+	
+	def __on_buttonTorResolve_clicked (self, widget, data=None):
+		self.__lblTorResolveError.set_text ('')
+		self.__entryIpAddress.set_text ('')	
+		host = self.__entryHostName.get_text ()
+		if host:
+			try:
+				ip = self.__torresolve.resolve (host)
+				self.__entryIpAddress.set_text (ip)
+			except TorResolve.TorResolveError, err:
+				self.__lblTorResolveError.set_text (str (err))
+			except:
+				pass
+		
+	def start_tor (self, event, data = None):
+		self.__startstop.execute ('start')
+	def stop_tor (self, event, data = None):
+		self.__startstop.execute ('stop')
+	def restart_tor (self, event, data = None):
+		self.__startstop.execute ('restart')
+
+	def button_press(self, widget, event):
+        	if event.type == gtk.gdk.BUTTON_PRESS and event.button == 3:
+			self.__applet.setup_menu (self.__menu, self.__verbs)
+			menu =  self.__applet.get_popup_component()
+			if self.__monitor.torStatus == 'Started':
+				menu.set_prop ( '/commands/StartTor',	\
+					'sensitive', '0')
+				menu.set_prop ( '/commands/StopTor', 	\
+					'sensitive', '1')
+				menu.set_prop ( '/commands/RestartTor',	\
+					'sensitive', '1')
+			elif self.__monitor.torStatus == 'Stopped':
+				menu.set_prop ( '/commands/StartTor',	\
+					'sensitive', '1')
+				menu.set_prop ( '/commands/StopTor',	\
+					'sensitive', '0')
+				menu.set_prop ( '/commands/RestartTor',	\
+					'sensitive', '0')		
+		elif event.type == gtk.gdk.BUTTON_PRESS and event.button == 1:
+			self.properties (event, None)
+
+def TorApplet_factory (applet, iid):
+	TorApplet (applet, iid)
+
+if len(sys.argv) == 2 and sys.argv[1] == "run-in-window":
+	main_window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+	main_window.set_title("TorApplet")
+	main_window.connect("destroy", gtk.main_quit) 
+	app = gnomeapplet.Applet()
+	TorApplet_factory(app, None)
+	app.reparent(main_window)
+	main_window.show_all()
+	gtk.main()
+	sys.exit()
+
+gnomeapplet.bonobo_factory ("OAFIID:GNOME_TorApplet_Factory", 
+                             gnomeapplet.Applet.__gtype__, 
+                             "TorApplet", PACKAGE_VERSION, TorApplet_factory)
+
