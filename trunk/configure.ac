@@ -1,4 +1,4 @@
-AC_INIT(torapplet0, 0.0.3-svn, https://developer.berlios.de/bugs/?group_id=5564)
+AC_INIT(torapplet0, 0.0.4-svn, https://developer.berlios.de/bugs/?group_id=5564)
 
 AM_INIT_AUTOMAKE([dist-bzip2 gnu])
 

@@ -178,15 +178,32 @@ class TorApplet:
 			('entryIpAddress')	
 		self.__lblTorResolveError = self.__gladeui.get_widget	\
 			('lblTorResolveError')
+		self.__treeviewLogMessages = self.__gladeui.get_widget	\
+			('treeviewLogMessages')
+
+		self.__logMessagesList = gtk.ListStore (str, str)
+		tvcolumn0 = gtk.TreeViewColumn("Level")
+		tvcolumn1 = gtk.TreeViewColumn("Message")
+		tvcolumn0.cell = gtk.CellRendererText()
+		tvcolumn1.cell = gtk.CellRendererText()
+		tvcolumn0.pack_start (tvcolumn0.cell,True)
+		tvcolumn1.pack_start (tvcolumn1.cell,True)
+		tvcolumn0.set_attributes (tvcolumn0.cell, text=0)
+		tvcolumn1.set_attributes (tvcolumn1.cell, text=1)
+		self.__treeviewLogMessages.append_column (tvcolumn0)
+		self.__treeviewLogMessages.append_column (tvcolumn1)
+		self.__treeviewLogMessages.set_model (self.__logMessagesList)
 			
 		self.__dialoglogo.set_from_file (self.__pixmaps['TorLogo'])	
 		self.__dialogevents = {
-			'on_TorPropertiesDialog_delete_event': \
+			'on_TorPropertiesDialog_delete_event': 		    \
 				self.__on_TorPropertiesDialog_delete_event, \
-			'on_closebutton1_clicked': \
-				self.__on_closebutton1_clicked, \
-			'on_buttonTorResolve_clicked': \
-				self.__on_buttonTorResolve_clicked
+			'on_closebutton1_clicked': 			    \
+				self.__on_closebutton1_clicked, 	    \
+			'on_buttonTorResolve_clicked': 		   	    \
+				self.__on_buttonTorResolve_clicked, 	    \
+			'on_buttonResetLog_clicked':			    \
+				self.__on_buttonResetLog_clicked
 			}
 
 		self.__gladeui.signal_autoconnect (self.__dialogevents)
@@ -251,6 +268,7 @@ class TorApplet:
 		self.__lblErrorsCount.set_text ('0')
 		self.__lblWarningsCount.set_text ('0')
 		self.__lblUptime.set_text ('0')
+		self.__logMessagesList.clear()
 		
 	def monitor_callback (self, notification, userdata):
 		s = self.__formatBytes (self.__monitor.bytesSent)
@@ -322,6 +340,9 @@ Active OR Connections: %d""") % \
 				(str (self.__monitor.warningsCount))
 			self.__lblErrorsCount.set_text \
 				(str (self.__monitor.errorsCount))
+			log_level = str (notification.data[0])
+			log_message = str (notification.data[1]).strip()
+			self.__logMessagesList.append ((log_level, log_message))
 
 		elif notification.name == "ResetCounters":
 			self.__resetLabels ()
@@ -353,6 +374,9 @@ Active OR Connections: %d""") % \
 
 	def __on_closebutton1_clicked (self, widget, data=None):
 		self.__propsdialog.hide ()
+	
+	def __on_buttonResetLog_clicked (self, widget, data=None):
+		self.__logMessagesList.clear()
 	
 	def __on_buttonTorResolve_clicked (self, widget, data=None):
 		self.__lblTorResolveError.set_text ('')

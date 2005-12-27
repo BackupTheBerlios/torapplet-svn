@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: TorApplet0 0.1.2\n"
+"Project-Id-Version: TorApplet0 0.0.4-svn\n"
 "Report-Msgid-Bugs-To: https://developer.berlios.de/bugs/?group_id=5564\n"
-"POT-Creation-Date: 2005-12-22 18:35+0100\n"
+"POT-Creation-Date: 2005-12-27 21:53+0100\n"
 "PO-Revision-Date: 2005-12-13 19:08+0100\n"
 "Last-Translator: Fabrizio Tarizzo <software@fabriziotarizzo.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -55,19 +55,19 @@ msgstr ""
 "Tor è Inattivo\n"
 "Versione di Tor: n/a"
 
-#: src/torapplet0.py.in:197
+#: src/torapplet0.py.in:215
 msgid "Please enter your password"
 msgstr "Inserisci la tua password"
 
-#: src/torapplet0.py.in:198
+#: src/torapplet0.py.in:216
 msgid "Password"
 msgstr "Password"
 
-#: src/torapplet0.py.in:219
+#: src/torapplet0.py.in:237
 msgid "days"
 msgstr "giorni"
 
-#: src/torapplet0.py.in:258
+#: src/torapplet0.py.in:277
 #, python-format
 msgid ""
 "Tor is %s %s\n"
@@ -82,11 +82,11 @@ msgstr ""
 "Avvisi: %d - Errori: %d\n"
 "Connessioni OR attive: %d"
 
-#: src/torapplet0.py.in:277 src/torapplet0.glade.c:11
+#: src/torapplet0.py.in:296 src/torapplet0.glade.c:11
 msgid "n/a"
 msgstr "n/a"
 
-#: src/torapplet0.py.in:344
+#: src/torapplet0.py.in:363
 msgid "translator_credits"
 msgstr "Fabrizio Tarizzo"
 
@@ -124,7 +124,7 @@ msgstr "Errori: "
 
 #: src/torapplet0.glade.c:18
 msgid "Log messages:"
-msgstr ""
+msgstr "Messaggi:"
 
 #: src/torapplet0.glade.c:19
 msgid "Sent:"
@@ -182,3 +182,7 @@ msgstr "_Risolvi"
 #: src/torapplet0.glade.c:40
 msgid "Tor Resolve"
 msgstr ""
+
+#: src/torapplet0.glade.c:41
+msgid "Log messages"
+msgstr "Messaggi"

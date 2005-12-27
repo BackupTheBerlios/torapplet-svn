@@ -1,4 +1,17 @@
-2005-12-20 Features of version 0.0.3
+2005-12-27 Version 0.0.4-svn
+	   Fabrizio Tarizzo <software.fabriziotarizzo.org>
+
+	* Added log messages display
+	    o configure.ac (New version number)
+	    o src/torapplet0.glade (New tab in gtk.Notebook)
+	    o src/torapplet0.glade.c (New labels)
+	    o src/torapplet0.py.in (gtk.ListStore and gtk.TreeView objects
+	    	for log messages)
+	    o po/torapplet0.pot (New labels translations)
+	    o po/it.po (New labels translated)
+	    o po/it.gmo (New labels translated)
+
+2005-12-20 Features of version 0.0.3-svn
 
 	* Visual display of the Tor daemon status (red icon: stopped,
 	  green icon: started, dark green icon: sending/receiving);
