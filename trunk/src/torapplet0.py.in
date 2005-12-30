@@ -60,6 +60,7 @@ import gnome.ui
 import gettext
 _ = gettext.gettext
 import locale
+from time import strftime
 
 import TorApplet0.TorMonitor as TorMonitor
 from TorApplet0.TorStartStop import *
@@ -105,6 +106,8 @@ class TorApplet:
 		<menuitem name="ItemStop"    verb="StopTor"    label="%s" />
 		<menuitem name="ItemRestart" verb="RestartTor" label="%s" />
 		<separator />
+		<menuitem name="ItemLogMsg"  verb="DisplayLog" label="%s" />
+		<separator />
 		<menuitem name="ItemProps" verb="Props" label="%s"
 			  pixtype="stock" pixname="gtk-properties" />
 		<menuitem name="ItemAbout" verb="About" label="%s"
@@ -112,6 +115,7 @@ class TorApplet:
 		</popup>""" % ( _("_Start Tor"),
 				_("S_top Tor"),
 				_("_Restart Tor"),
+				_("Log messages"),
 				_("_Properties"),
 				_("_About..."))
 
@@ -119,7 +123,8 @@ class TorApplet:
 				 ("Props",      self.properties),
 				 ("StartTor",   self.start_tor),
 				 ("StopTor",    self.stop_tor),
-				 ("RestartTor", self.restart_tor) ]
+				 ("RestartTor", self.restart_tor),
+				 ("DisplayLog", self.display_log) ]
 
 		#GTK stuff
 		self.__applet = applet
@@ -140,6 +145,8 @@ class TorApplet:
 		self.__gladeui = gtk.glade.XML (GLADEFILE)
 		self.__propsdialog = self.__gladeui.get_widget \
 			('TorPropertiesDialog')
+		self.__logdialog = self.__gladeui.get_widget   \
+			('LogMessagesDialog')
 			
 		self.__dialoglogo = self.__gladeui.get_widget ('logo')
 		self.__notebook = self.__gladeui.get_widget ('notebook1')
@@ -181,28 +188,37 @@ class TorApplet:
 		self.__treeviewLogMessages = self.__gladeui.get_widget	\
 			('treeviewLogMessages')
 
-		self.__logMessagesList = gtk.ListStore (str, str)
-		tvcolumn0 = gtk.TreeViewColumn("Level")
-		tvcolumn1 = gtk.TreeViewColumn("Message")
-		tvcolumn0.cell = gtk.CellRendererText()
-		tvcolumn1.cell = gtk.CellRendererText()
-		tvcolumn0.pack_start (tvcolumn0.cell,True)
-		tvcolumn1.pack_start (tvcolumn1.cell,True)
-		tvcolumn0.set_attributes (tvcolumn0.cell, text=0)
-		tvcolumn1.set_attributes (tvcolumn1.cell, text=1)
+		self.__logMessagesList = gtk.ListStore (str, str, str)
+		tvcolumn0 = gtk.TreeViewColumn (_("Level"))
+		tvcolumn1 = gtk.TreeViewColumn (_("Message"))
+		tvcolumn2 = gtk.TreeViewColumn (_("Time"))
+		cell0 = gtk.CellRendererPixbuf ()
+		cell1 = gtk.CellRendererText ()
+		cell2 = gtk.CellRendererText ()
+		tvcolumn0.pack_start (cell0, False)
+		tvcolumn2.pack_start (cell2, False)
+		tvcolumn1.pack_start (cell1, True)
+		tvcolumn0.set_attributes (cell0, stock_id=0)
+		tvcolumn1.set_attributes (cell1, text=1)
+		tvcolumn2.set_attributes (cell2, text=2)
 		self.__treeviewLogMessages.append_column (tvcolumn0)
+		self.__treeviewLogMessages.append_column (tvcolumn2)
 		self.__treeviewLogMessages.append_column (tvcolumn1)
 		self.__treeviewLogMessages.set_model (self.__logMessagesList)
 			
 		self.__dialoglogo.set_from_file (self.__pixmaps['TorLogo'])	
 		self.__dialogevents = {
-			'on_TorPropertiesDialog_delete_event': 		    \
-				self.__on_TorPropertiesDialog_delete_event, \
-			'on_closebutton1_clicked': 			    \
-				self.__on_closebutton1_clicked, 	    \
-			'on_buttonTorResolve_clicked': 		   	    \
-				self.__on_buttonTorResolve_clicked, 	    \
-			'on_buttonResetLog_clicked':			    \
+			'on_TorPropertiesDialog_delete_event': 		\
+				self.__on_Dialog_delete_event, 		\
+			'on_LogMessagesDialog_delete_event':		\
+				self.__on_Dialog_delete_event,		\
+			'on_closebutton1_clicked': 			\
+				self.__on_closebutton1_clicked, 	\
+			'on_logdialog_closebutton_clicked':		\
+				self.__on_logdialog_close_clicked,	\
+			'on_buttonTorResolve_clicked': 		   	\
+				self.__on_buttonTorResolve_clicked, 	\
+			'on_buttonResetLog_clicked':			\
 				self.__on_buttonResetLog_clicked
 			}
 
@@ -341,8 +357,16 @@ Active OR Connections: %d""") % \
 			self.__lblErrorsCount.set_text \
 				(str (self.__monitor.errorsCount))
 			log_level = str (notification.data[0])
+			if log_level == 'WARN_MSG':
+				log_level_icon = gtk.STOCK_DIALOG_WARNING
+			elif log_level == 'ERR_MSG':
+				log_level_icon = gtk.STOCK_DIALOG_ERROR
+			else:
+				log_level_icon = gtk.STOCK_INFO
+
 			log_message = str (notification.data[1]).strip()
-			self.__logMessagesList.append ((log_level, log_message))
+			self.__logMessagesList.prepend ((log_level_icon, \
+				log_message, strftime ("%x %X")))
 
 		elif notification.name == "ResetCounters":
 			self.__resetLabels ()
@@ -368,13 +392,19 @@ Active OR Connections: %d""") % \
 		self.__notebook.set_current_page (0)
 		self.__propsdialog.show_all ()
 		
-	def __on_TorPropertiesDialog_delete_event (self, widget, data=None):
+	def __on_Dialog_delete_event (self, widget, data=None):
 		widget.hide ()
 		return True
-
+		
+	def display_log (self, event, data=None):
+		self.__logdialog.show_all ()
+		
 	def __on_closebutton1_clicked (self, widget, data=None):
 		self.__propsdialog.hide ()
-	
+		
+	def __on_logdialog_close_clicked (self, widget, data=None):
+		self.__logdialog.hide ()
+		
 	def __on_buttonResetLog_clicked (self, widget, data=None):
 		self.__logMessagesList.clear()
 	

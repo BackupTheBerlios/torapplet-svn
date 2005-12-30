@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://developer.berlios.de/bugs/?group_id=5564\n"
-"POT-Creation-Date: 2005-12-27 21:53+0100\n"
+"POT-Creation-Date: 2005-12-30 21:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,57 +16,73 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/torapplet0.py.in:78
+#: src/torapplet0.py.in:79
 msgid "Monitoring the Tor daemon activity."
 msgstr ""
 
-#: src/torapplet0.py.in:85
+#: src/torapplet0.py.in:86
 msgid "Started"
 msgstr ""
 
-#: src/torapplet0.py.in:85 src/torapplet0.glade.c:9
+#: src/torapplet0.py.in:86 src/torapplet0.glade.c:9
 msgid "Stopped"
 msgstr ""
 
-#: src/torapplet0.py.in:112
+#: src/torapplet0.py.in:115
 msgid "_Start Tor"
 msgstr ""
 
-#: src/torapplet0.py.in:113
+#: src/torapplet0.py.in:116
 msgid "S_top Tor"
 msgstr ""
 
-#: src/torapplet0.py.in:114
+#: src/torapplet0.py.in:117
 msgid "_Restart Tor"
 msgstr ""
 
-#: src/torapplet0.py.in:115
+#: src/torapplet0.py.in:118 src/torapplet0.glade.c:41
+msgid "Log messages"
+msgstr ""
+
+#: src/torapplet0.py.in:119
 msgid "_Properties"
 msgstr ""
 
-#: src/torapplet0.py.in:116
+#: src/torapplet0.py.in:120
 msgid "_About..."
 msgstr ""
 
-#: src/torapplet0.py.in:135
+#: src/torapplet0.py.in:140
 msgid ""
 "Tor is Stopped\n"
 "Tor version: n/a"
 msgstr ""
 
-#: src/torapplet0.py.in:215
+#: src/torapplet0.py.in:192
+msgid "Level"
+msgstr ""
+
+#: src/torapplet0.py.in:193
+msgid "Message"
+msgstr ""
+
+#: src/torapplet0.py.in:194
+msgid "Time"
+msgstr ""
+
+#: src/torapplet0.py.in:231
 msgid "Please enter your password"
 msgstr ""
 
-#: src/torapplet0.py.in:216
+#: src/torapplet0.py.in:232
 msgid "Password"
 msgstr ""
 
-#: src/torapplet0.py.in:237
+#: src/torapplet0.py.in:253
 msgid "days"
 msgstr ""
 
-#: src/torapplet0.py.in:277
+#: src/torapplet0.py.in:293
 #, python-format
 msgid ""
 "Tor is %s %s\n"
@@ -76,11 +92,11 @@ msgid ""
 "Active OR Connections: %d"
 msgstr ""
 
-#: src/torapplet0.py.in:296 src/torapplet0.glade.c:11
+#: src/torapplet0.py.in:312 src/torapplet0.glade.c:11
 msgid "n/a"
 msgstr ""
 
-#: src/torapplet0.py.in:363
+#: src/torapplet0.py.in:387
 msgid "translator_credits"
 msgstr ""
 
@@ -175,8 +191,4 @@ msgstr ""
 
 #: src/torapplet0.glade.c:40
 msgid "Tor Resolve"
-msgstr ""
-
-#: src/torapplet0.glade.c:41
-msgid "Log messages"
 msgstr ""

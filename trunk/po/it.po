@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: TorApplet0 0.0.4-svn\n"
+"Project-Id-Version: TorApplet0 0.0.5-svn\n"
 "Report-Msgid-Bugs-To: https://developer.berlios.de/bugs/?group_id=5564\n"
-"POT-Creation-Date: 2005-12-27 21:53+0100\n"
+"POT-Creation-Date: 2005-12-30 21:12+0100\n"
 "PO-Revision-Date: 2005-12-13 19:08+0100\n"
 "Last-Translator: Fabrizio Tarizzo <software@fabriziotarizzo.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -15,39 +15,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/torapplet0.py.in:78
+#: src/torapplet0.py.in:79
 msgid "Monitoring the Tor daemon activity."
 msgstr "Monitoraggio dell'attività del demone Tor."
 
-#: src/torapplet0.py.in:85
+#: src/torapplet0.py.in:86
 msgid "Started"
 msgstr "Attivo"
 
-#: src/torapplet0.py.in:85 src/torapplet0.glade.c:9
+#: src/torapplet0.py.in:86 src/torapplet0.glade.c:9
 msgid "Stopped"
 msgstr "Inattivo"
 
-#: src/torapplet0.py.in:112
+#: src/torapplet0.py.in:115
 msgid "_Start Tor"
 msgstr "_Avvia Tor"
 
-#: src/torapplet0.py.in:113
+#: src/torapplet0.py.in:116
 msgid "S_top Tor"
 msgstr "_Ferma Tor"
 
-#: src/torapplet0.py.in:114
+#: src/torapplet0.py.in:117
 msgid "_Restart Tor"
 msgstr "_Riavvia Tor"
 
-#: src/torapplet0.py.in:115
+#: src/torapplet0.py.in:118 src/torapplet0.glade.c:41
+msgid "Log messages"
+msgstr "Messaggi"
+
+#: src/torapplet0.py.in:119
 msgid "_Properties"
 msgstr "_Proprietà"
 
-#: src/torapplet0.py.in:116
+#: src/torapplet0.py.in:120
 msgid "_About..."
 msgstr "_Informazioni"
 
-#: src/torapplet0.py.in:135
+#: src/torapplet0.py.in:140
 msgid ""
 "Tor is Stopped\n"
 "Tor version: n/a"
@@ -55,19 +59,31 @@ msgstr ""
 "Tor è Inattivo\n"
 "Versione di Tor: n/a"
 
-#: src/torapplet0.py.in:215
+#: src/torapplet0.py.in:192
+msgid "Level"
+msgstr "Livello"
+
+#: src/torapplet0.py.in:193
+msgid "Message"
+msgstr "Messaggio"
+
+#: src/torapplet0.py.in:194
+msgid "Time"
+msgstr "Ora"
+
+#: src/torapplet0.py.in:231
 msgid "Please enter your password"
 msgstr "Inserisci la tua password"
 
-#: src/torapplet0.py.in:216
+#: src/torapplet0.py.in:232
 msgid "Password"
 msgstr "Password"
 
-#: src/torapplet0.py.in:237
+#: src/torapplet0.py.in:253
 msgid "days"
 msgstr "giorni"
 
-#: src/torapplet0.py.in:277
+#: src/torapplet0.py.in:293
 #, python-format
 msgid ""
 "Tor is %s %s\n"
@@ -82,11 +98,11 @@ msgstr ""
 "Avvisi: %d - Errori: %d\n"
 "Connessioni OR attive: %d"
 
-#: src/torapplet0.py.in:296 src/torapplet0.glade.c:11
+#: src/torapplet0.py.in:312 src/torapplet0.glade.c:11
 msgid "n/a"
 msgstr "n/a"
 
-#: src/torapplet0.py.in:363
+#: src/torapplet0.py.in:387
 msgid "translator_credits"
 msgstr "Fabrizio Tarizzo"
 
@@ -112,7 +128,7 @@ msgstr "Uptime: "
 #: src/torapplet0.glade.c:32 src/torapplet0.glade.c:33
 #: src/torapplet0.glade.c:34
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/torapplet0.glade.c:14
 msgid "Warnings: "
@@ -182,7 +198,3 @@ msgstr "_Risolvi"
 #: src/torapplet0.glade.c:40
 msgid "Tor Resolve"
 msgstr ""
-
-#: src/torapplet0.glade.c:41
-msgid "Log messages"
-msgstr "Messaggi"
