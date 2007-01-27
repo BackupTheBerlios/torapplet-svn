@@ -26,7 +26,7 @@ AC_PYTHON_MODULE(gobject)
 AC_DEFINE_DIR([DATADIR],[datadir])
 AC_DEFINE_DIR([PYTHONDIR],[pythondir])
 
-ALL_LINGUAS="it"
+ALL_LINGUAS="it bn da en_CA fr sv"
 AM_GNU_GETTEXT([external])
 
 AC_OUTPUT([Makefile

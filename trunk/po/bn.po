@@ -1,0 +1,194 @@
+# Bengali translation for torapplet
+# Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
+# This file is distributed under the same license as the torapplet package.
+# Khandakar Mujahidul Islam <suzan@bengalinux.org>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: TorApplet0 0.0.5-svn\n"
+"Report-Msgid-Bugs-To: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
+"POT-Creation-Date: 2005-12-30 21:12+0100\n"
+"PO-Revision-Date: 2006-05-26 13:18+0000\n"
+"Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
+"Language-Team: Bengali <bn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Rosetta-Export-Date: 2007-01-23 22:09+0000\n"
+
+#: src/torapplet0.py.in:79
+msgid "Monitoring the Tor daemon activity."
+msgstr ""
+
+#: src/torapplet0.py.in:86
+msgid "Started"
+msgstr ""
+
+#: src/torapplet0.py.in:86 src/torapplet0.glade.c:9
+msgid "Stopped"
+msgstr ""
+
+#: src/torapplet0.py.in:115
+msgid "_Start Tor"
+msgstr ""
+
+#: src/torapplet0.py.in:116
+msgid "S_top Tor"
+msgstr ""
+
+#: src/torapplet0.py.in:117
+msgid "_Restart Tor"
+msgstr ""
+
+#: src/torapplet0.py.in:118 src/torapplet0.glade.c:41
+msgid "Log messages"
+msgstr ""
+
+#: src/torapplet0.py.in:119
+msgid "_Properties"
+msgstr "বৈশিষ্ট্য(_ব)"
+
+#: src/torapplet0.py.in:120
+msgid "_About..."
+msgstr "পরিচিতি...(_প)"
+
+#: src/torapplet0.py.in:140
+msgid ""
+"Tor is Stopped\n"
+"Tor version: n/a"
+msgstr ""
+
+#: src/torapplet0.py.in:192
+msgid "Level"
+msgstr "স্তর"
+
+#: src/torapplet0.py.in:193
+msgid "Message"
+msgstr "বার্তা"
+
+#: src/torapplet0.py.in:194
+msgid "Time"
+msgstr "সময়"
+
+#: src/torapplet0.py.in:231
+msgid "Please enter your password"
+msgstr "দয়া করে আপনার পাসওয়ার্ড দিন"
+
+#: src/torapplet0.py.in:232
+msgid "Password"
+msgstr "পাসওয়ার্ড"
+
+#: src/torapplet0.py.in:253
+msgid "days"
+msgstr "দিন"
+
+#: src/torapplet0.py.in:293
+#, python-format
+msgid ""
+"Tor is %s %s\n"
+"Tor version: %s\n"
+"Sent: %s %s - Recv: %s %s\n"
+"Warnings: %d - Errors: %d\n"
+"Active OR Connections: %d"
+msgstr ""
+
+#: src/torapplet0.py.in:312 src/torapplet0.glade.c:11
+msgid "n/a"
+msgstr "অপ্রযোজ্য"
+
+#: src/torapplet0.py.in:387
+msgid "translator_credits"
+msgstr "খন্দকার মুজাহিদুল ইসলাম সুজন <suzan@bengalinux.org>"
+
+#: src/torapplet0.glade.c:7
+msgid "Tor properties"
+msgstr ""
+
+#: src/torapplet0.glade.c:8
+msgid "Tor status: "
+msgstr ""
+
+#: src/torapplet0.glade.c:10
+msgid "Tor version: "
+msgstr ""
+
+#: src/torapplet0.glade.c:12
+msgid "Uptime: "
+msgstr ""
+
+#: src/torapplet0.glade.c:13 src/torapplet0.glade.c:16
+#: src/torapplet0.glade.c:17 src/torapplet0.glade.c:22
+#: src/torapplet0.glade.c:23 src/torapplet0.glade.c:24
+#: src/torapplet0.glade.c:32 src/torapplet0.glade.c:33
+#: src/torapplet0.glade.c:34
+msgid "0"
+msgstr "০"
+
+#: src/torapplet0.glade.c:14
+msgid "Warnings: "
+msgstr ""
+
+#: src/torapplet0.glade.c:15
+msgid "Errors: "
+msgstr ""
+
+#: src/torapplet0.glade.c:18
+msgid "Log messages:"
+msgstr ""
+
+#: src/torapplet0.glade.c:19
+msgid "Sent:"
+msgstr ""
+
+#: src/torapplet0.glade.c:20
+msgid "Received: "
+msgstr ""
+
+#: src/torapplet0.glade.c:21
+msgid "Total: "
+msgstr "সর্বমোট: "
+
+#: src/torapplet0.glade.c:25 src/torapplet0.glade.c:26
+#: src/torapplet0.glade.c:27
+msgid "bytes"
+msgstr "বাইট"
+
+#: src/torapplet0.glade.c:28
+msgid "Bandwidth usage:"
+msgstr ""
+
+#: src/torapplet0.glade.c:29
+msgid "Launched: "
+msgstr "লঞ্চপ্যাড: "
+
+#: src/torapplet0.glade.c:30
+msgid "Connected: "
+msgstr "সংযুক্ত: "
+
+#: src/torapplet0.glade.c:31
+msgid "Failures: "
+msgstr ""
+
+#: src/torapplet0.glade.c:35
+msgid "Onion Routers:"
+msgstr ""
+
+#: src/torapplet0.glade.c:36
+msgid "General"
+msgstr "সাধারণ"
+
+#: src/torapplet0.glade.c:37
+msgid "IP Address: "
+msgstr "আইপি ঠিকানা: "
+
+#: src/torapplet0.glade.c:38
+msgid "Host name: "
+msgstr "হোস্ট নাম: "
+
+#: src/torapplet0.glade.c:39
+msgid "_Resolve"
+msgstr ""
+
+#: src/torapplet0.glade.c:40
+msgid "Tor Resolve"
+msgstr ""

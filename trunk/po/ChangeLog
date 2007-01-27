@@ -1,3 +1,11 @@
+2007-01-26 Fabrizio Tarizzo <software@fabriziotarizzo.org>
+	* Added translations provided by Rosetta users:
+		o bn    by Khandakar Mujahidul Islam <suzan@bengalinux.org>
+		o da    by Christian Flintrup <launchpad@agge.net>
+		o en_CA by Michael Melanson <mmelanso@uoguelph.ca>
+		o fr    by Nicolas Velin <nsv@fr.st>
+		o sv    by Daniel Nylander <po@danielnylander.se>
+
 2005-12-06  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* Makefile.in.in: New file, from gettext-0.14.5.
